@@ -42,7 +42,13 @@ function decorateI2c (bus) {
 
     startRead (cb) {
       i = 0
-      process.nextTick(cb)
+      bus.readI2cBlock(SAKURAIO_SLAVE_ADDR, 32, 32, response, function (err) {
+        if (err) cb(err)
+        else {
+          debug('<-', response)
+          cb()
+        }
+      })
     },
     startReadSync () {
       i = 0
