@@ -1,78 +1,69 @@
+# node-sakuraio-i2c
+
+SAKURA Internet IoT Communication Module Library for NodeJS using I2c bus.
+Should work on most Linux board like the Raspberry Pi, C.H.I.P., BeagleBone
+or Intel Edison. All methods have asynchronous and synchronous forms.
+
+Currently only Node 7 or more are supported (it may work on Node 6).
+I2c communication is handled through [i2c-bus](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cmd-cb).
+Please refer to i2c-bus documentation if you meet compilation issues or for
+I2c setup.
+
+# Disclaimer
+
+This project is not affiliated with sakura.io and is licensed under the very
+permissive ISC license. Use it at your own risk.
+
+This is an alpha version so the API may not be stable yet!
+
+# Installation
+
+```
+$ npm install sakuraio-i2c
+```
+
+# Example
+
+## Asynchronous example
+
+```js
+const SakuraIOI2c = require('sakuraio-i2c')
+
+const BUS_NO = 2
+
+SakuraIOI2c.open(BUS_NO, function (err, bus) {
+  if (err) throw err
+  else {
+    bus.getConnectionStatus(function (err, status) {
+      console.log('Connection status', status)
+    })
+  }
+})
+```
+
+## Synchronous example
+
+```js
+const SakuraIOI2c = require('sakuraio-i2c')
+
+const BUS_NO = 2
+
+var bus = SakuraIOI2c.openSync(BUS_NO)
+var status = bus.getConnectionStatus()
+console.log(status)
+```
+
 # API specification
 
-## sakuraio.getConnectionStatus()
+## SakuraIOI2c.open(busNo, cb)
+* busNo: I2c bus number (integer)
+* cb: function (err, bus)
+  * bus: Bus object
 
-* Returns any of the following string:
-00h エラーなし
-01h 圏外
-02h 接続エラー
-03h 意図しない切断
+## SakuraIOI2c.openSync(busNo)
+* busNo: I2c bus number (integer)
+* returns: Bus object
 
-// Common
-uint8_t getConnectionStatus();
-## getSignalQuality()
-
-## getDateTime(cb)
-
-* cb: function(err, date)
-
-Where `date` is a Date instance.
-
-uint8_t echoback(uint8_t length, uint8_t *data, uint8_t *response);
-
-// Send
-uint8_t enqueueTx(uint8_t ch, int32_t value, uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, uint32_t value, uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, int64_t value, uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, uint64_t value, uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, float value, uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, double value, uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, uint8_t value[8], uint64_t offset);
-uint8_t enqueueTx(uint8_t ch, int32_t value);
-uint8_t enqueueTx(uint8_t ch, uint32_t value);
-uint8_t enqueueTx(uint8_t ch, int64_t value);
-uint8_t enqueueTx(uint8_t ch, uint64_t value);
-uint8_t enqueueTx(uint8_t ch, float value);
-uint8_t enqueueTx(uint8_t ch, double value);
-uint8_t enqueueTx(uint8_t ch, uint8_t value[8]);
-uint8_t sendImmediatelyRaw(uint8_t ch, uint8_t type, uint8_t length, uint8_t *data, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, int32_t value, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, uint32_t value, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, int64_t value, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, uint64_t value, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, float value, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, double value, uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, uint8_t value[8], uint64_t offset);
-uint8_t sendImmediately(uint8_t ch, int32_t value);
-uint8_t sendImmediately(uint8_t ch, uint32_t value);
-uint8_t sendImmediately(uint8_t ch, int64_t value);
-uint8_t sendImmediately(uint8_t ch, uint64_t value);
-uint8_t sendImmediately(uint8_t ch, float value);
-uint8_t sendImmediately(uint8_t ch, double value);
-uint8_t sendImmediately(uint8_t ch, uint8_t value[8]);
-uint8_t getTxQueueLength(uint8_t *available, uint8_t *queued);
-uint8_t clearTx();
-uint8_t getTxStatus(uint8_t *queue, uint8_t *immediate);
-uint8_t send();
-
-// Receive
-uint8_t dequeueRx(uint8_t *ch, uint8_t *type, uint8_t *value, int64_t *offset);
-uint8_t peekRx(uint8_t *ch, uint8_t *type, uint8_t *value, int64_t *offset);
-uint8_t getRxQueueLength(uint8_t *available, uint8_t *queued);
-uint8_t clearRx();
-
-// File download
-uint8_t startFileDownload(uint16_t fileId);
-uint8_t cancelFileDownload();
-uint8_t getFileMetaData(uint8_t *status, uint32_t *totalSize, uint64_t *timestamp, uint32_t *crc);
-uint8_t getFileDownloadStatus(uint8_t *status, uint32_t *currentSize);
-uint8_t getFileData(uint8_t *size, uint8_t *data);
-
-// Operation
-uint16_t getProductID();
-uint8_t getUniqueID(char *data);
-uint8_t getFirmwareVersion(char *data);
-uint8_t unlock();
-uint8_t updateFirmware();
-uint8_t getFirmwareUpdateStatus();
-uint8_t reset();
+The returned bus object can the be used to communicate with the SakuraIO module.
+Documentation regarding the bus object is bound in the [node-sakuraio](https://github.com/malikolivier/node-sakuraio)
+README.
