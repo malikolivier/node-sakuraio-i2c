@@ -1,6 +1,6 @@
 {
   "name": "sakuraio-i2c",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SAKURA Internet IoT Communication Module Library for NodeJS using I2c bus",
   "main": "sakuraio-i2c.js",
   "scripts": {
@@ -14,6 +14,6 @@
   "dependencies": {
     "debug": "^3.0.0",
     "i2c-bus": "^1.2.2",
-    "sakuraio": "file:../node-sakuraio"
+    "sakuraio": "0.0.1"
   }
 }
