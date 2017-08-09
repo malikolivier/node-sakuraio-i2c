@@ -1,5 +1,6 @@
 const I2c = require('i2c-bus')
 const SakuraIO = require('sakuraio')
+const debug = require('debug')('sakuraio-i2c')
 
 const SAKURAIO_SLAVE_ADDR = 0x4F
 
@@ -22,17 +23,17 @@ function decorateI2c (bus) {
     endWriteSync () {
       var buf = Buffer.alloc(request[1] + 2)
       request.copy(buf, 0, 1)
-      console.log('->', buf)
+      debug('->', request[0], buf)
       bus.writeI2cBlockSync(SAKURAIO_SLAVE_ADDR, request[0], buf.length, buf)
     },
     sendByte (byte, cb) {
-      i += 1
       request[i] = byte
+      i += 1
       cb()
     },
     sendByteSync (byte) {
-      i += 1
       request[i] = byte
+      i += 1
     },
 
     startRead (cb) {
@@ -42,7 +43,7 @@ function decorateI2c (bus) {
     startReadSync () {
       i = 0
       bus.readI2cBlockSync(SAKURAIO_SLAVE_ADDR, 32, 32, response)
-      console.log('<-', response)
+      debug('<-', response)
     },
     endRead (cb) {
       // TODO

@@ -12,6 +12,7 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
+    "debug": "^3.0.0",
     "i2c-bus": "^1.2.2",
     "sakuraio": "file:../node-sakuraio"
   }
