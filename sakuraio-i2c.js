@@ -11,14 +11,18 @@ function decorateI2c (bus) {
   return SakuraIO.use({
     startWrite (cb) {
       i = 0
-      cb()
+      process.nextTick(cb)
     },
     startWriteSync () {
       i = 0
     },
     endWrite (cb) {
-      // TODO
-      cb()
+      // request length is equal to the length of the datum in bytes (request[1])
+      // + 1 byte for data length + 1 byte for parity check
+      var buf = Buffer.alloc(request[1] + 2)
+      request.copy(buf, 0, 1)
+      debug('->', request[0], buf)
+      bus.writeI2cBlock(SAKURAIO_SLAVE_ADDR, request[0], buf.length, buf, cb)
     },
     endWriteSync () {
       var buf = Buffer.alloc(request[1] + 2)
@@ -29,7 +33,7 @@ function decorateI2c (bus) {
     sendByte (byte, cb) {
       request[i] = byte
       i += 1
-      cb()
+      process.nextTick(cb)
     },
     sendByteSync (byte) {
       request[i] = byte
@@ -38,7 +42,7 @@ function decorateI2c (bus) {
 
     startRead (cb) {
       i = 0
-      cb()
+      process.nextTick(cb)
     },
     startReadSync () {
       i = 0
@@ -46,8 +50,7 @@ function decorateI2c (bus) {
       debug('<-', response)
     },
     endRead (cb) {
-      // TODO
-      cb()
+      process.nextTick(cb)
     },
     endReadSync () {},
     receiveByte (cb) {
