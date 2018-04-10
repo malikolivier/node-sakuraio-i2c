@@ -1,6 +1,6 @@
 {
   "name": "sakuraio-i2c",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "SAKURA Internet IoT Communication Module Library for NodeJS using I2c bus",
   "main": "sakuraio-i2c.js",
   "scripts": {
@@ -8,12 +8,16 @@
   },
   "author": "Malik Olivier Boussejra <malik@boussejra.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/malikolivier/node-sakuraio-i2c/issues"
+  },
+  "homepage": "https://github.com/malikolivier/node-sakuraio-i2c",
   "devDependencies": {
     "standard": "^10.0.2"
   },
   "dependencies": {
     "debug": "^3.0.0",
     "i2c-bus": "^1.2.2",
-    "sakuraio": "0.0.1"
+    "sakuraio": "^0.1.0"
   }
 }
