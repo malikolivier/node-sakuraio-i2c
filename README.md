@@ -49,7 +49,7 @@ const SakuraIOI2c = require('sakuraio-i2c')
 const BUS_NO = 2
 
 var bus = SakuraIOI2c.openSync(BUS_NO)
-var status = bus.getConnectionStatus()
+var status = bus.getConnectionStatusSync()
 console.log(status)
 ```
 
